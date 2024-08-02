@@ -17,6 +17,7 @@ class groupe extends Model
        'name',
        'description',
        'owner_id',
+       'Last_message_id',
 
 
 
