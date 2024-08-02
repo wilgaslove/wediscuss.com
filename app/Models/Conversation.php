@@ -19,4 +19,19 @@ class Conversation extends Model
         'last_message_id',
        
     ];
+
+    public function lastmMessage() {
+        return $this->belongsTo(Message::class);
+    }
+
+    public function user1() {
+        return $this->belongsTo(user::class, 'user_id1');
+
+    }
+
+    public function user2() {
+        return $this->belongsTo(user::class, 'user_id2');
+
+    }
+
 }
