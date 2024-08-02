@@ -8,10 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class groupe extends Model
 {
     use HasFactory;
+ /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+       'name',
+       'description',
+       'owner_id',
 
-    protected  $fillable {
-        'name':
-        'description':
-        'owner_id':
-    };
+
+
+
+
+    ];
 }
