@@ -20,4 +20,8 @@ class Message extends Model
         'group_id',
         'conversation_id',
     ];
+
+    public function sender(){
+        
+    }
 }
