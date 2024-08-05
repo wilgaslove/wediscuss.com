@@ -2,7 +2,7 @@
     <div>
         <AuthenticatedLayout>
             <template #header>
-                <h2 class="font-semi" >Dashboard</h2>
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>
             </template>
 
             <p>Vous êtes connecté</p>
@@ -14,4 +14,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
