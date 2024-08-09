@@ -69,25 +69,3 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 
 
-
-        <!-- icon d'affichage graphique Wilgas -->
-        <button
-          class="Btn transition-all hover:scale-110 active:scale-100 active:delay-10 tooltip fullScreen fixed top-[27.5rem]"
-          @click=""
-        >
-          <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-              <!-- Dégradé linéaire défini dans la balise defs -->
-              <defs>
-                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style="stop-color:#ff5722;stop-opacity:1" />
-                  <stop offset="100%" style="stop-color:#4caf50;stop-opacity:1" />
-                </linearGradient>
-              </defs>
-            
-              <!-- Barres du graphique avec dégradé appliqué -->
-              <rect x="4" y="6" width="4" height="16" fill="url(#grad1)" />
-              <rect x="10" y="10" width="4" height="12" fill="url(#grad1)" />
-              <rect x="16" y="14" width="4" height="8" fill="url(#grad1)" />
-          </svg>
-
-        </button>
