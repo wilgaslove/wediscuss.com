@@ -31,16 +31,18 @@ use Illuminate\Database\Eloquent\Model;
 class Conversation extends Model
 {
     use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id1',
-        'user_id2',
-        'last_message_id',
+        "user_id1",
+        "user_id2",
+        "last_message_id",
     ];
+
     /**
      * Définit une relation de type "appartient à" avec le modèle Message en tant que dernier message.
      * 
@@ -86,4 +88,21 @@ class Conversation extends Model
         return $this->belongsTo(User::class, 'user_id2');
     }
 
+    /**
+     * Fonction qui récupère toutes les conversations associées à l'utilisateur connecté
+     */
+
+    public static function getConversationForSidebar(User $user)
+    {
+        // récupérer tous les utilisateurs autre que celui connecté
+        $users = User::getUsersExcept($user);
+        // récupérer tous les groupes auxquels l'utilisateur connecé appartient
+        $groups = Group::getGroupsExcept($user);
+        // renvoyer toutes les conversations que l'utilisateur a effectué avec les utilisateurs et les groupes
+        return $users->map(function(User $user) {
+            return $user->toConversationArray();
+        })->concat($groups->map(function (Group $group) {
+            return $group->toConversationArray();
+        }));
+    }
 }

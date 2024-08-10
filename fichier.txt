@@ -1,0 +1,30 @@
+composer require laravel/breeze
+
+php artisan breeze:install vue --dark --typescript
+
+php artisan install:broadcasting
+
+npm i @headlessui/vue daisyui uuid vue3-emoji-picker unplugin-vue-markdown @heroicons/vue prime vue
+
+composer require barryvdh/laravel-ide-helper barryvdh/laravel-debugbar --dev
+
+php artisan ide-helper:models
+php artisan ide-helper:generate
+php artisan ide-helper:eloquent
+
+npm install -D prettier
+touch .prettierrc.json
+
+npm i -D eslint @rushstack/eslint-patch @vue/eslint-config-prettier @vue/eslint-config-typescript
+touch .eslintrc.cjs ou touch eslint.config.json
+npm init @eslint/config
+
+npm install @vueuse/core
+npm i @vueuse/components
+npm i @vueuse/shared
+npm i @iconify/tailwind
+npm install --save-dev @iconify/vue
+
+php artisan make:resource UserResource
+
+npm install tailwind-scrollbar
