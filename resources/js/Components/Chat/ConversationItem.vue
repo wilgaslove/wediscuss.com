@@ -1,5 +1,5 @@
 <template>
-  <Link href="#" class="flex items-center gap-2 p-2 hover:bg-black/30 dark:hover:bg-white/30">
+  <Link href="#" class="flex items-center gap-2 p-2 hover:bg-slate-400/30 transition-all">
     <!-- Avatar de profil pour les users simples -->
     <UserAvatar
       :avatar="conversation.avatar"
