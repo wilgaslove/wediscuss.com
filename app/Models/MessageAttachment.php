@@ -39,10 +39,10 @@ class MessageAttachment extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        "message_id",
-        "name",
-        "path",
-        "mime",
-        "size",
+        'message_id',
+        'name',
+        'path',
+        'mime',
+        'size',
     ];
 }

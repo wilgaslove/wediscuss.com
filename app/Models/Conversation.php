@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Message;
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * 
@@ -31,18 +33,16 @@ use Illuminate\Database\Eloquent\Model;
 class Conversation extends Model
 {
     use HasFactory;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        "user_id1",
-        "user_id2",
-        "last_message_id",
+        'user_id1',
+        'user_id2',
+        'last_message_id',
     ];
-
     /**
      * Définit une relation de type "appartient à" avec le modèle Message en tant que dernier message.
      * 
@@ -91,18 +91,48 @@ class Conversation extends Model
     /**
      * Fonction qui récupère toutes les conversations associées à l'utilisateur connecté
      */
-
-    public static function getConversationForSidebar(User $user)
+    public static function getConversationsForSidebar(User $user)
     {
         // récupérer tous les utilisateurs autre que celui connecté
         $users = User::getUsersExcept($user);
-        // récupérer tous les groupes auxquels l'utilisateur connecé appartient
+        // récupérer tous les groupes auxquels l'utilisateur connecté appartient
         $groups = Group::getGroupsExcept($user);
         // renvoyer toutes les conversations que l'utilisateur a effectué avec les utilisateurs et les groupes
-        return $users->map(function(User $user) {
+        return $users->map(function (User $user) {
             return $user->toConversationArray();
         })->concat($groups->map(function (Group $group) {
             return $group->toConversationArray();
         }));
     }
+
+    /**
+     * Trouve les conversations entre 2 utilisateurs puis m-à-j la colonne "last_message_id"
+     * @param int $user_id1
+     * @param int $user_id2
+     * @param \App\Models\Message|\Illuminate\Database\Eloquent\TModel $message
+     * @return void
+     */
+    public static function updateConversationWithMessage($user_id1, $user_id2, $message)
+    {
+        $conversation = Conversation::where(function ($query) use ($user_id1, $user_id2) {
+            $query->where('user_id1', $user_id1)
+                ->where('user_id2', $user_id2);
+        })->orWhere(function ($query) use ($user_id1, $user_id2) {
+            $query->where('user_id1', $user_id2)
+                ->where('user_id2', $user_id1);
+        })->first();
+
+        if ($conversation) {
+            $conversation->update([
+                'last_message_id' => $message->id
+            ]);
+        } else {
+            Conversation::create([
+                'user_id1' => $user_id1,
+                'user_id2' => $user_id2,
+                'last_message_id' => $message->id,
+            ]);
+        }
+    }
+
 }

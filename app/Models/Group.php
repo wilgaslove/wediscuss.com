@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * 
@@ -37,17 +36,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Group extends Model
 {
     use HasFactory;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        "name",
-        "description",
-        "owner_id",
-        "last_message_id",
+        'name',
+        'description',
+        'owner_id',
+        'last_message_id',
     ];
 
     /**
@@ -62,6 +60,7 @@ class Group extends Model
     public function users()
     {
         // Établit la relation en utilisant la table pivot 'group_user'
+        // return $this->belongsToMany(User::class, 'group_user', 'group_id', 'user_id');
         return $this->belongsToMany(User::class, 'group_user');
     }
 
@@ -100,37 +99,55 @@ class Group extends Model
      * @param \App\Models\User $user
      * @return \Illuminate\Support\Collection
      */
-    public static function getGroupsExcept(User $user) {
+    public static function getGroupsExcept(User $user)
+    {
         $userId = $user->id;
 
-        $query = self::select(["groups.*", "messages.message as last_message", 
-        "messages.created_at as last_message_date"])
-        ->join("group_user", "group_user.group_id", "=", "groups.id")
-        ->leftJoin("messages", "messages.id", "=", "groups.last_message_id")
-        ->where("group_user.user_id", $userId)
-        ->orderByDesc("messages.created_at")
-        ->orderBy("groups.name");
+        // self::select() ==> Group::select();
+        $query = self::select(["groups.*", "messages.message as last_message", "messages.created_at as last_message_date"])
+            ->join("group_user", "group_user.group_id", "=", "groups.id")
+            ->leftJoin("messages", "messages.id", "=", "groups.last_message_id")
+            ->where("group_user.user_id", $userId)
+            // ->orderBy("messages.created_at", "desc");
+            ->orderByDesc("messages.created_at")
+            ->orderBy("groups.name");
 
         return $query->get();
     }
 
     /**
-     * Méthode qui transforme le model en tableau
+     * Méthode qui transform le modèle en tableau
      * @return array
      */
-    public function toConversationArray() {
+    public function toConversationArray()
+    {
         return [
-            "id" => $this->id,
-            "name" => $this->name,
-            "description" => $this->description,
-            "is_group" => true,
-            "owner_id" => $this->owner_id,
-            "users" => $this->users,
-            "user_ids" => $this->users->pluck("id"),
-            "created_at" => $this->created_at,
-            "updated_at" => $this->updated_at,
-            "last_message" => $this->last_message,
-            "last_message_date" => $this->last_message_date,
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'is_group' => true,
+            'owner_id' => $this->owner_id,
+            'users' => $this->users,
+            'user_ids' => $this->users->pluck('id'),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'last_message' => $this->last_message,
+            'last_message_date' => $this->last_message_date,
         ];
     }
+
+    /**
+     * M-à-j l'id du dernier message envoyé dans un groupe
+     * @param mixed $groupId
+     * @param mixed $message
+     * @return void
+     */
+    public static function updateGroupWithMessage($groupId, $message) {
+        $group = Group::find($groupId);
+
+        $group->update([
+            ['last_message_id' =>  $message->id], // valeurs à mettre à jour
+        ]);
+    }
+
 }

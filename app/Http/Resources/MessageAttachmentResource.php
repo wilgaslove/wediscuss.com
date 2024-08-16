@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 
-class UserResource extends JsonResource
+class MessageAttachmentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,14 +17,14 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'message_id' => $this->message_id,
             'name' => $this->name,
-            'email' => $this->email,
-            'avatar' => $this->avatar ? Storage::url($this->avatar) : null,
-            'is_admin' => (bool) $this->is_admin,
+            'path' => $this->path,
+            'mime' => $this->mime, // extension ===> (en: Multipurpose Internet Mail Extension)
+            'size' => $this->size,
+            'url' => Storage::url($this->path),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'last_message' => $this->last_message,
-            'last_message_date' => $this->last_message_date,
         ];
     }
 }
