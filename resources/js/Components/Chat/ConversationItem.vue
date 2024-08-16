@@ -1,6 +1,10 @@
 <template>
-  <div class="flex ">
-    <Link href="#" class="flex items-center gap-2 p-2 hover:bg-slate-400/30 transition-all w-full ">
+  <div class="flex justify-center">
+    <Link 
+    :href="conversation.is_user 
+    ? route('chat.user', conversation.id) 
+    : route('chat.group', conversation.id)" 
+    class="w-full inline-flex items-center gap-2 p-2 hover:bg-slate-400/30 transition-all">
       <!-- Avatar de profil pour les users simples -->
       <UserAvatar
         :avatar="conversation.avatar"
@@ -15,7 +19,7 @@
           <h3 class="font-semibold text-sm text-nowrap text-ellipsis truncate">
             {{ conversation.name }}
           </h3>
-          <span v-if="conversation.last_message_date" class="text-nowrap italic">
+          <span v-if="conversation.last_message_date" class="text-nowrap text-ellipsis truncate italic">
             {{ conversation.last_message_date }}
           </span>
         </div>
@@ -27,7 +31,7 @@
         </p>
       </div>
     </Link>
-    <UserOptionsDropdown class="inline-block cursor-pointer basis-1" />
+    <UserOptionsDropdown :conversation="conversation" class="inline-block cursor-pointer flex-1" />
   </div>
 </template>
 
@@ -36,7 +40,7 @@ import { Conversation } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 import UserAvatar from './UserAvatar.vue';
 import GroupAvatar from './GroupAvatar.vue';
-import UserOptionsDropdown from '../UserOptionsDropdown.vue';
+import UserOptionsDropdown from './UserOptionsDropdown.vue';
 
 const page = usePage();
 

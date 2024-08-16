@@ -19,7 +19,7 @@
       </div>
       <!-- Liste des conversations -->
       <div
-        class="flex-1 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-300 overflow-y-auto px-3 h-full "
+        class="flex-1 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-300 overflow-y-auto px-3 h-full"
       >
         <ConversationItem
           v-for="conversation in filteredConversations"
